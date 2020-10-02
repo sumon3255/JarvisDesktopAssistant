@@ -3,7 +3,7 @@ import datetime
 import speech_recognition as sr
 import wikipedia
 import smtplib
-
+import random as r
 import webbrowser
 import os
 
@@ -91,8 +91,13 @@ if __name__ == '__main__':
             webbrowser.open("stackoverflow.com",new=1)
 
         elif 'play music' in query:
-            music_dir = 'C:\\Users\\user\\Downloads\\failling.mp3'
-            os.startfile(os.path.join(music_dir))
+            #music_dir = 'C:\\Users\\user\\Downloads\\failling.mp3'
+            music_dir = 'your-path-to-music-folder'
+            songs = os.listdir(music_dir)
+            songs_list = list(songs)
+            random_song = r.choice(songs_list)
+            os.startfile(os.path.join(music_dir, random_song))
+            
         elif 'time' in query:
             strtime = datetime.datetime.now().strftime("%H:%M:%S")
             print(strtime)
@@ -101,7 +106,6 @@ if __name__ == '__main__':
         elif 'play fifa' in query:
             open_fifa = 'D:\\Games\\FIFA 17\\stp-fifa17.exe'
             os.startfile(os.path.join(open_fifa))
-
 
         elif 'email' in query:
             try:
