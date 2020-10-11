@@ -3,6 +3,9 @@ import datetime
 import speech_recognition as sr
 import wikipedia
 import smtplib
+import cv2
+import time
+rom PIL import ImageGrab
 
 import webbrowser
 import os
@@ -114,6 +117,86 @@ if __name__ == '__main__':
             except Exception as e:
                 print(e)
                 speak("Sorry  Sumon. I am not able to sent this email")
+         elif "show battery status" in query:
+            battery=psutil.sensors_battery()
+            percent = str(battery.percent)
+            plugged=battery.power_plugged
+            #plugged = "Plugged In" if plugged else "Not Plugged In"
+            if plugged:
+                plug='plugged'
+            else:
+                plug='not plugged'
+            per = int(percent)
+            # plugged = "Plugged In" if plugged else "Not Plugged In"
+            if plugged:
+                plug = "plugged"
+            else:
+                plug = "not_plugged"
+
+            if plug == 'not_plugged' and per <= 30:
+                speak("Sir your battery is ")
+                speak(percent)
+                speak("sir please pluggin your charger because your battery is low ")
+            elif plug == 'plugged' and battery > 20:
+                speak("Sir your battery is ")
+                speak(percent)
+            elif plug == 'not_plugged' and per > 20:
+                speak("Sir your battery is ")
+                speak(percent)
+            elif plug == 'plugged' and battery <= 20:
+                speak("Sir your battery is ")
+                speak(percent)
+                speak("sir your battery is low dont remove your charger")
+            elif plug == 'plugged' and battery == 100:
+                speak("Sir your battery is ")
+                speak(percent)
+                speak("sir your battery is full please remove charger ")
+            else:
+                print(percent)
+                elif "camera" in query or "take a photo" in query:
+
+            speak("Note : sir if you want to capture the image the press on spacebar")
+            # 1.creating a video object
+            video = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+
+            # 2. Variable
+            a = 0
+            # 3. While loop
+            while True:
+                a = a + 1
+                # 4.Create a frame object
+                check, frame = video.read()
+                # 5.show the frame!
+                cv2.imshow("Capturing", frame)
+                # 6.for playing
+                key = cv2.waitKey(1)
+
+                if key%256 == 32: #32 ascii value of sapcebar
+                    break
+            # 7. image saving
+            for i in range(100):
+                drive_letter = "C:\\Users\\ravi singh\\PycharmProjects\\Camera_Img\\"
+                folder_name = r'downloaded-files'
+                folder_time = datetime.datetime.now().strftime("%Y-%m-%d_%I-%M-%S_%p")
+                extention = '.jpg'
+                folder_to_save_files = drive_letter + folder_name + folder_time + extention
+
+                showPic = cv2.imwrite(folder_to_save_files, frame)
+                print(folder_to_save_files)
+                print(showPic)
+                break
+            # 8. shutdown the camera
+            video.release()
+            cv2.destroyAllWindows()
+                elif "take a screenshot" in query or "take screenshot" in query:
+            snapshot=ImageGrab.grab()
+            drive_letter = "C:\\Users\\ravi singh\\PycharmProjects\\Screenshot\\"
+            folder_name = r'downloaded-files'
+            folder_time = datetime.datetime.now().strftime("%Y-%m-%d_%I-%M-%S_%p")
+            extention = '.jpg'
+            folder_to_save_files = drive_letter + folder_name + folder_time + extention
+            snapshot.save(folder_to_save_files)
+            speak("done sir")
         elif 'bye' in query:
                   exit()
 
